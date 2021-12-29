@@ -12,10 +12,17 @@ func Urls() *gin.Engine {
 	r.Use(middleware.CORSMiddleware())
 	apiV1 := r.Group("api/v1")
 	{
-		apiV1.GET("/:name", v1.Index)
-	}
+		auth := apiV1.Group("auth")
+		{
+			auth.GET("/:name", v1.Index)
+		}
+		user := apiV1.Group("user")
+		{
+			user.POST("/home", v1.Home)
+			user.POST("/login", v1.Login)
+			//user.POST("/home", v1.Me)
 
-	r.POST("/home", v1.Home)
-	r.POST("/login", v1.Login)
+		}
+	}
 	return r
 }
