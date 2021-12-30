@@ -1,0 +1,5 @@
+DBUSER=user
+DBHOST=*.*.*.*
+DBPASS=**********
+DBPORT=5432
+DBNAME=mydb

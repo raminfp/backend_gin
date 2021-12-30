@@ -3,10 +3,18 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	v1 "github.com/raminfp/backend_gin/api/v1"
+	"github.com/raminfp/backend_gin/db"
 	"github.com/raminfp/backend_gin/middleware"
+	"gorm.io/gorm"
+)
+
+var (
+	postDb *gorm.DB = db.ConnectPostgres()
 )
 
 func Urls() *gin.Engine {
+
+	defer db.ClosePostgres(postDb)
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
