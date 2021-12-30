@@ -10,6 +10,9 @@ func Urls() *gin.Engine {
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
+	r.NoRoute(middleware.NoRouteHandler())
+	r.NoMethod(middleware.NoMethodHandler())
+
 	apiV1 := r.Group("api/v1")
 	{
 		auth := apiV1.Group("auth")
