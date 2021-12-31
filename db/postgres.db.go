@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"github.com/joho/godotenv"
+	"github.com/raminfp/backend_gin/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
@@ -27,9 +28,11 @@ func ConnectPostgres() *gorm.DB {
 	if err != nil {
 		panic("Failed to connect to postgres database")
 	}
-	//db.AutoMigrate()
-	println("Connected to postgres database")
-
+	err = db.AutoMigrate(&entity.User{})
+	if err != nil {
+		panic("Failed : Unable to migrate your postgres database")
+	}
+	//println("Connected to postgres database")
 	return db
 }
 

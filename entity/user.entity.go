@@ -1,14 +1,9 @@
 package entity
 
-
 type User struct {
-	Firstname	string	`form:"firstname" validate:"required,min=1,max=5"`
-	Lastname	string	`form:"lastname" validate:"required,min=1,max=5"`
-	Email	string	`form:"email" validate:"required,email"`
-}
-
-
-type UserJson struct {
-	Firstname	string	`json:"firstname" binding:"required"`
-	Lastname	string	`json:"lastname"  binding:"required"`
+	ID        int64  `gorm:"primary_key:auto_increment" json:"-"`
+	Firstname string `gorm:"type:varchar(100)" json:"-"`
+	Lastname  string `gorm:"type:varchar(100)" json:"-"`
+	Email     string `gorm:"type:varchar(100);unique" json:"-"`
+	Password  string `gorm:"type:varchar(100)" json:"-"`
 }

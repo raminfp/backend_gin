@@ -5,16 +5,21 @@ import (
 	v1 "github.com/raminfp/backend_gin/api/v1"
 	"github.com/raminfp/backend_gin/db"
 	"github.com/raminfp/backend_gin/middleware"
+	"github.com/raminfp/backend_gin/repository"
+	"github.com/raminfp/backend_gin/services"
 	"gorm.io/gorm"
 )
 
 var (
-	postDb *gorm.DB = db.ConnectPostgres()
+	postDb         *gorm.DB                  = db.ConnectPostgres()
+	authRepository repository.AuthRepository = repository.NewAuthRepository(postDb)
+	authService    services.AuthService      = services.NewAuthService(authRepository)
+	authAPI        v1.AuthAPI                = v1.NewAuthAPI(authService)
 )
 
 func Urls() *gin.Engine {
 
-	defer db.ClosePostgres(postDb)
+	//defer db.ClosePostgres(postDb)
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
@@ -26,19 +31,17 @@ func Urls() *gin.Engine {
 	{
 		auth := apiV1.Group("auth")
 		{
-			auth.GET("/:name", v1.Index)
-			// /api/v1/auth/login
-			auth.GET("/login", v1.Index)
 			// /api/v1/auth/register
-			auth.GET("/register", v1.Index)
-			// /api/v1/auth/session
+			auth.POST("/register", authAPI.Register)
+			// /api/v1/auth/login
+			auth.GET("/login", v1.Login)
 		}
 		user := apiV1.Group("user")
 		{
 			// api/v1/user/me
 			// api/v1/user/profile
 			// api/v1/user/tickets
-			user.POST("/home", v1.Home)
+			//user.POST("/home", v1.Home)
 			user.POST("/login", v1.Login)
 			//user.POST("/home", v1.Me)
 		}
