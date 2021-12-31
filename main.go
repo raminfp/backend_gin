@@ -4,8 +4,7 @@ import (
 	"github.com/raminfp/backend_gin/routes"
 )
 
-
-func main()  {
+func main() {
 
 	r := routes.Urls()
 	err := r.Run()
