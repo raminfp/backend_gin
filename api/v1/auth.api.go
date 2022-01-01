@@ -37,6 +37,6 @@ func (a authAPI) Register(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "status": false})
 		return
 	}
-	context.JSON(http.StatusBadRequest, gin.H{"data": user, "status": true})
+	context.JSON(http.StatusOK, gin.H{"data": user, "status": true})
 	return
 }
