@@ -21,8 +21,8 @@ func NewAuthRepository(connection *gorm.DB) AuthRepository {
 
 func (a authRepository) AddUser(user entity.User) (string, error) {
 	err := a.conn.Save(&user)
-	if err != nil {
-		return err.Error.Error(), nil
+	if err.Error != nil {
+		return "", err.Error
 	}
 	return "insert", nil
 }
