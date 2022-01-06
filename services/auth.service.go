@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"github.com/mashingan/smapping"
 	"github.com/raminfp/backend_gin/entity"
 	"github.com/raminfp/backend_gin/repository"
 	"github.com/raminfp/backend_gin/serilizers"
@@ -22,11 +24,19 @@ func NewAuthService(authRepository repository.AuthRepository) AuthService {
 
 func (a authService) AddUserService(registerRequest serilizers.RegisterRequest) (string, error) {
 	user := entity.User{}
-	user.Email = registerRequest.Email
-	user.Firstname = registerRequest.Firstname
-	user.Lastname = registerRequest.Lastname
-	user.Password = registerRequest.Password
-
+	userExists, _ := a.authRepository.FindByEmail(registerRequest.Email)
+	if userExists != "" {
+		return "", errors.New("user already exists")
+	}
+	//user.Email = registerRequest.Email
+	//user.Firstname = registerRequest.Firstname
+	//user.Lastname = registerRequest.Lastname
+	//user.Password = registerRequest.Password
+	mapped := smapping.MapFields(&registerRequest)
+	err := smapping.FillStruct(&user, mapped)
+	if err != nil {
+		return "Error in mapping", nil
+	}
 	addUser, err := a.authRepository.AddUser(user)
 	if err != nil {
 		return "", err
