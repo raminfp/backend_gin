@@ -16,6 +16,13 @@ import (
 	"time"
 )
 
+type JwtService interface {
+	CreateToken(user entity.User) (serilizers.Token, error)
+	ValidateToken(accessToken string) (entity.User, error)
+	ValidateRefreshToken(model serilizers.Token) (entity.User, error)
+	createRefreshToken(token serilizers.Token) (serilizers.Token, error)
+}
+
 type Jwt struct {
 }
 

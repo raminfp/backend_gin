@@ -5,6 +5,7 @@ import (
 	v1 "github.com/raminfp/backend_gin/api/v1"
 	"github.com/raminfp/backend_gin/db"
 	"github.com/raminfp/backend_gin/middleware"
+	"github.com/raminfp/backend_gin/pkg/jwt"
 	"github.com/raminfp/backend_gin/repository"
 	"github.com/raminfp/backend_gin/services"
 	"gorm.io/gorm"
@@ -15,6 +16,10 @@ var (
 	authRepository repository.AuthRepository = repository.NewAuthRepository(postDb)
 	authService    services.AuthService      = services.NewAuthService(authRepository)
 	authAPI        v1.AuthAPI                = v1.NewAuthAPI(authService)
+	userRepository repository.UserRepository = repository.NewUserRepository(postDb)
+	userService    services.UserService      = services.NewUserService(userRepository)
+	userAPI        v1.UserAPI                = v1.NewUserAPI(userService)
+	jwtAuth        jwt.Jwt
 )
 
 func Urls() *gin.Engine {
@@ -40,9 +45,10 @@ func Urls() *gin.Engine {
 			// /api/v1/auth/forgetPass
 			//auth.GET("/login", v1.Forget)
 		}
-		user := apiV1.Group("user")
+		user := apiV1.Group("user", middleware.AthorizationJWT(jwtAuth))
 		{
 			// api/v1/user/me
+			user.POST("/me", userAPI.Me)
 			// api/v1/user/profile
 			// api/v1/user/tickets
 			//user.POST("/home", v1.Home)
