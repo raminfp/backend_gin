@@ -8,6 +8,7 @@ $ go get -u github.com/gin-gonic/gin
 $ go get -u gorm.io/gorm
 $ go get -u github.com/joho/godotenv
 $ go get -u github.com/mashingan/smapping
+$ go get -u github.com/golang-jwt/jwt
 ```
 
 
