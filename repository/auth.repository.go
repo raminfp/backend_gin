@@ -32,7 +32,7 @@ func (a authRepository) FindByEmail(email string) (string, error) {
 	if res.Error != nil {
 		return "", res.Error
 	}
-	return "founded", nil
+	return user.Password, nil
 }
 
 func NewAuthRepository(connection *gorm.DB) AuthRepository {

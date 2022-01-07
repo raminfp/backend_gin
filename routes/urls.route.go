@@ -34,7 +34,11 @@ func Urls() *gin.Engine {
 			// /api/v1/auth/register
 			auth.POST("/register", authAPI.Register)
 			// /api/v1/auth/login
-			auth.GET("/login", v1.Login)
+			auth.POST("/login", authAPI.Login)
+			// /api/v1/auth/verify
+			//auth.GET("/login", v1.EmailVerify)
+			// /api/v1/auth/forgetPass
+			//auth.GET("/login", v1.Forget)
 		}
 		user := apiV1.Group("user")
 		{
